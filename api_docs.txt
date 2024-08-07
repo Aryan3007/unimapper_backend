@@ -1,49 +1,50 @@
-url => http://localhost:5000/projects/
+url => http://localhost:5000/notes/
 method => POST
 headrer => Authorization: "login-token"
 json body => {
-    "title":"title2",
+    "name":"title2",
     "content":"content2",
     "description":"description2"
 }
 
-description => create a project
+description => create a note
 
 =====================================================================
 
-url => http://localhost:5000/projects/
+url => http://localhost:5000/notes/
 method => GET
 headrer => Authorization: "login-token"
 
-description => get all the projects created by user
+description => get all the notes created by user
 
 
 ======================================================================
 
-url => http://localhost:5000/projects/<project_id>
+url => http://localhost:5000/notes/<note_id>
 method => GET
 headrer => Authorization: "login-token"
 
-description => get project details of a project
+description => get note details of a project
 
 
 ======================================================================
 
-url => http://localhost:5000/projects/<project_id>
+url => http://localhost:5000/notes/<note_id>
 method => PUT
 headrer => Authorization: "login-token"
 json body => {
-    "title":"title2",
-    "content":"content2",
-    "description":"description2"
+    "name":"name1",
+    "description":"description1",
+    "content":"content1",
+    "flowchart_id":"12ty"
 }
 
-description => update project data
+description => update note data
 
 ======================================================================
 
-url => http://localhost:5000/projects/<project_id>
+url => http://localhost:5000/notes/<note_id>
 method => DELETE
 headrer => Authorization: "login-token"
 
-description => delete a project
+description => delete a note

@@ -27,76 +27,122 @@ def verify_user(email, password):
     return None
 
 
-# projects
-def create_project(title="", content="", description="", user_id=None):
-
-    if not user_id:
-        raise ValueError("User ID must be provided")
-
-    mongo.db.projects.insert_one(
-        {
-            "title": title,
-            "content": content,
-            "description": description,
-            "user_id": user_id,
-        }
-    )
+# Notes
+def create_note(name, description, content, user_id, flowchart_id=None):
+    note_data = {
+        "name": name.strip(),
+        "description": description.strip(),
+        "content": content.strip(),
+        "user_id": ObjectId(user_id),
+        "flowchart_id": flowchart_id.strip() if flowchart_id else None,
+    }
+    mongo.db.notes.insert_one(note_data)
 
 
-def delete_project(project_id):
-    result = mongo.db.projects.delete_one({"_id": ObjectId(project_id)})
-    return result.deleted_count > 0
-
-
-def update_project(project_id, update_fields):
-    result = mongo.db.projects.update_one(
-        {"_id": ObjectId(project_id)}, {"$set": update_fields}
-    )
-    return result.modified_count > 0
-
-
-def get_project(project_id):
+def get_note(note_id):
     try:
-        object_id = ObjectId(project_id)
+        object_id = ObjectId(note_id)
     except Exception as e:
-        print(f"Error converting project_id to ObjectId: {e}")
+        print(f"Error converting note_id to ObjectId: {e}")
         return None
 
-    project = mongo.db.projects.find_one({"_id": object_id})
-
-    if not project:
+    note = mongo.db.notes.find_one({"_id": object_id})
+    if not note:
         return None
 
-    user_id = project.get("user_id")
-    user = None
-
-    if user_id:
-        user = mongo.db.users.find_one({"_id": ObjectId(user_id)})
+    user = mongo.db.users.find_one({"_id": note["user_id"]})
+    user_info = (
+        {"name": user.get("name", ""), "email": user.get("email", "")}
+        if user
+        else {"name": "", "email": ""}
+    )
 
     return {
-        "title": project.get("title", ""),
-        "content": project.get("content", ""),
-        "description": project.get("description", ""),
-        "user": {
-            "email": user.get("email", "") if user else "",
-            "name": user.get("name", "") if user else "",
-        },
+        "name": note.get("name", ""),
+        "description": note.get("description", ""),
+        "content": note.get("content", ""),
+        "user_id": str(note.get("user_id", "")),
+        "flowchart_id": note.get("flowchart_id", None),
+        "user": user_info,
     }
 
 
-def get_projects_by_user(user_id):
+def update_note(note_id, update_fields):
+    try:
+        object_id = ObjectId(note_id)
+    except Exception as e:
+        print(f"Error converting note_id to ObjectId: {e}")
+        return False
 
-    projects = mongo.db.projects.find({"user_id": user_id})
+    result = mongo.db.notes.update_one({"_id": object_id}, {"$set": update_fields})
+    return result.modified_count > 0
 
-    project_list = []
-    for project in projects:
-        project_list.append(
+
+def delete_note(note_id):
+    try:
+        object_id = ObjectId(note_id)
+    except Exception as e:
+        print(f"Error converting note_id to ObjectId: {e}")
+        return False
+
+    result = mongo.db.notes.delete_one({"_id": object_id})
+    return result.deleted_count > 0
+
+
+def get_all_notes():
+    notes = list(mongo.db.notes.find())
+    notes_with_user_info = []
+
+    for note in notes:
+        user = mongo.db.users.find_one({"_id": note["user_id"]})
+        user_info = (
+            {"name": user.get("name", ""), "email": user.get("email", "")}
+            if user
+            else {"name": "", "email": ""}
+        )
+
+        notes_with_user_info.append(
             {
-                "id": str(project["_id"]),
-                "title": project["title"],
-                "content": project["content"],
-                "description": project["description"],
+                "id": str(note["_id"]),
+                "user_id": str(note["user_id"]),
+                "name": note.get("name", ""),
+                "description": note.get("description", ""),
+                "content": note.get("content", ""),
+                "flowchart_id": note.get("flowchart_id", None),
+                "user": user_info,
             }
         )
 
-    return project_list
+    return notes_with_user_info
+
+
+def get_notes_by_user(user_id):
+    try:
+        object_id = ObjectId(user_id)
+    except Exception as e:
+        print(f"Error converting user_id to ObjectId: {e}")
+        return []
+
+    notes = list(mongo.db.notes.find({"user_id": object_id}))
+    notes_with_user_info = []
+
+    for note in notes:
+        user = mongo.db.users.find_one({"_id": note["user_id"]})
+        user_info = (
+            {"name": user.get("name", ""), "email": user.get("email", "")}
+            if user
+            else {"name": "", "email": ""}
+        )
+
+        notes_with_user_info.append(
+            {
+                "id": str(note["_id"]),
+                "name": note.get("name", ""),
+                "description": note.get("description", ""),
+                "content": note.get("content", ""),
+                "flowchart_id": note.get("flowchart_id", None),
+                "user": user_info,
+            }
+        )
+
+    return notes_with_user_info
