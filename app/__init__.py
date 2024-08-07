@@ -3,6 +3,7 @@ from .config import Config
 from .models import init_db
 from .routes import auth_bp
 from .note_routes import note_bp
+from .flowcharts_routes import flowcharts_bp 
 
 
 def create_app():
@@ -13,5 +14,6 @@ def create_app():
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(note_bp, url_prefix="/notes")
+    app.register_blueprint(flowcharts_bp, url_prefix="/flowcharts")
 
     return app

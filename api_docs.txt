@@ -48,3 +48,51 @@ method => DELETE
 headrer => Authorization: "login-token"
 
 description => delete a note
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Flowchart API>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+======================================================================
+
+url => http://localhost:5000/flowcharts
+method => POST
+headrer => Authorization: "login-token"
+json body =>{
+    "title":"",
+    "nodes":[],
+    "edges":[]
+}
+
+description => crate a Flowchart
+
+
+======================================================================
+
+url => http://localhost:5000/flowchart/<flowchart_id>
+method => GET
+headrer => Authorization: "login-token"
+
+description => get a flowchart
+
+
+======================================================================
+
+url => http://localhost:5000/flowchart/<flowchart_id>
+method => PUT
+headrer => Authorization: "login-token"
+json body =>{
+    "title":"",
+    "nodes":[],
+    "edges":[]
+}
+
+description => update flowchart fields
+
+======================================================================
+
+url => http://localhost:5000/flowchart/<flowchart_id>
+method => DELETE
+headrer => Authorization: "login-token"
+
+description => delete a flowchart

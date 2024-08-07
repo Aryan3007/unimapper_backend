@@ -146,3 +146,40 @@ def get_notes_by_user(user_id):
         )
 
     return notes_with_user_info
+
+
+# flowcharts
+# Create
+def create_flowchart(edges, nodes, title):
+    result = mongo.db.flowchart.insert_one({
+        "edges": edges,
+        "nodes": nodes,
+        "title": title
+    })
+    return result.inserted_id
+
+# Read
+def read_flowchart(flowchart_id):
+    result = mongo.db.flowchart.find_one({"_id": ObjectId(flowchart_id)})
+    return result
+
+# Update
+def update_flowchart(flowchart_id, edges=None, nodes=None, title=None):
+    update_fields = {}
+    if edges is not None:
+        update_fields["edges"] = edges
+    if nodes is not None:
+        update_fields["nodes"] = nodes
+    if title is not None:
+        update_fields["title"] = title
+
+    result = mongo.db.flowchart.update_one(
+        {"_id": ObjectId(flowchart_id)},
+        {"$set": update_fields}
+    )
+    return result.modified_count
+
+#delete
+def delete_flowchart(flowchart_id):
+    result = mongo.db.flowchart.delete_one({"_id": ObjectId(flowchart_id)})
+    return result.deleted_count
