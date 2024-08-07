@@ -19,4 +19,6 @@ def token_required(f):
 
         return f(*args, **kwargs)
 
+    decorator.__name__ = f.__name__
+
     return decorator

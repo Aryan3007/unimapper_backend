@@ -8,6 +8,7 @@ from .config import Config
 auth_bp = Blueprint("auth", __name__)
 
 
+# auth routes
 def generate_token(user_id):
     expiration = datetime.utcnow() + timedelta(seconds=Config.JWT_EXPIRATION_DELTA)
     token = jwt.encode(

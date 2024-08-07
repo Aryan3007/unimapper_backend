@@ -1,0 +1,49 @@
+url => http://localhost:5000/projects/
+method => POST
+headrer => Authorization: "login-token"
+json body => {
+    "title":"title2",
+    "content":"content2",
+    "description":"description2"
+}
+
+description => create a project
+
+=====================================================================
+
+url => http://localhost:5000/projects/
+method => GET
+headrer => Authorization: "login-token"
+
+description => get all the projects created by user
+
+
+======================================================================
+
+url => http://localhost:5000/projects/<project_id>
+method => GET
+headrer => Authorization: "login-token"
+
+description => get project details of a project
+
+
+======================================================================
+
+url => http://localhost:5000/projects/<project_id>
+method => PUT
+headrer => Authorization: "login-token"
+json body => {
+    "title":"title2",
+    "content":"content2",
+    "description":"description2"
+}
+
+description => update project data
+
+======================================================================
+
+url => http://localhost:5000/projects/<project_id>
+method => DELETE
+headrer => Authorization: "login-token"
+
+description => delete a project
