@@ -37,7 +37,7 @@ def register():
 
     hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     create_user(name, email, hashed_password)
-    return jsonify({"message": "User created successfully"}), 200
+    return jsonify({"message": "User created successfully"}), 201
 
 
 @auth_bp.route("/login", methods=["POST"])

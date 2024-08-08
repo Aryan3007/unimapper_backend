@@ -21,7 +21,7 @@ def create_project_route():
     content = data.get("content", "").strip()
     description = data.get("description", "").strip()
     user_id = request.user_id
-    
+
     if not title or not content or not description:
         return (
             jsonify(

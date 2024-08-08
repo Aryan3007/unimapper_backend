@@ -58,10 +58,16 @@ description => delete a note
 url => http://localhost:5000/flowcharts
 method => POST
 headrer => Authorization: "login-token"
-json body =>{
+formData body =>{
     "title":"",
-    "nodes":[],
-    "edges":[]
+    "image":"",
+}
+
+response => {
+    "filename": "2d0f8dc558e44bc0a87f2076a6b16f52_20240808121948.png",
+    "flowchart_id": "66b4b7e467ff5a1c0c244d3d",
+    "image_path": "/static/uploaded_images/2d0f8dc558e44bc0a87f2076a6b16f52_20240808121948.png",
+    "message": "Flowchart created and image saved successfully"
 }
 
 description => crate a Flowchart
@@ -73,6 +79,13 @@ url => http://localhost:5000/flowchart/<flowchart_id>
 method => GET
 headrer => Authorization: "login-token"
 
+response =>{
+    "_id": "66b4b7e467ff5a1c0c244d3d",
+    "filename": "2d0f8dc558e44bc0a87f2076a6b16f52_20240808121948.png",
+    "image_path": "/static/uploaded_images/2d0f8dc558e44bc0a87f2076a6b16f52_20240808121948.png",
+    "title": "test"
+}
+
 description => get a flowchart
 
 
@@ -81,10 +94,9 @@ description => get a flowchart
 url => http://localhost:5000/flowchart/<flowchart_id>
 method => PUT
 headrer => Authorization: "login-token"
-json body =>{
+formData body =>{
     "title":"",
-    "nodes":[],
-    "edges":[]
+    "image":"",
 }
 
 description => update flowchart fields
