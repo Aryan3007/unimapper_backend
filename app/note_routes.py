@@ -76,7 +76,8 @@ def delete_note_route(note_id):
 @note_bp.route("/", methods=["GET"])
 @token_required
 def get_all_notes_route():
-    notes = get_all_notes()
+    user_id = request.user_id
+    notes = get_notes_by_user(user_id)
     return jsonify(notes), 200
 
 
